@@ -1,0 +1,16 @@
+# Ignore environment files containing secrets/passwords
+*.env
+.env.*
+
+# Ignore specific sensitive config files (if any)
+**/secrets/*
+**/*.key
+**/*.crt
+
+# Ignore OS-generated junk
+.DS_Store
+Thumbs.db
+
+# Ignore Docker's internal data folders (if you store config and data separately)
+**/data/
+**/db/
