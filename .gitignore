@@ -38,3 +38,5 @@ Thumbs.db
 # These are generated when containers are running
 .docker-compose.un~
 *.swp
+*.conf
+servers.json
