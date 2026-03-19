@@ -1,0 +1,132 @@
+- name: Startpage
+#  width: slim
+  hide-desktop-navigation: false
+  center-vertically: true
+  columns:
+    - size: small
+      widgets:
+        - type: server-stats
+          servers:
+            - type: local
+              name: SERVER_NAME
+              hide-mountpoints-by-default: true
+              mountpoints:
+                "/":
+                  name: Root
+                  hide: false
+
+        - type: dns-stats
+          service: pihole-v6
+          url: 'http://SERVER_IP/'
+          password: 'PIHOLE_PASS_CACHE'
+
+        - type: custom-api
+          title: Immich stats
+          cache: 1d
+          url: http://SERVER_IP:2283/api/server/statistics
+          headers:
+            x-api-key: IMMICH_API_KEY
+            Accept: application/json
+          template: |
+            <div class="flex justify-between text-center">
+              <div>
+                  <div class="color-highlight size-h3">{{ .JSON.Int "photos" | formatNumber }}</div>
+                  <div class="size-h6">PHOTOS</div>
+              </div>
+              <div>
+                  <div class="color-highlight size-h3">{{ .JSON.Int "videos" | formatNumber }}</div>
+                  <div class="size-h6">VIDEOS</div>
+              </div>
+              <div>
+                  <div class="color-highlight size-h3">{{ div (.JSON.Int "usage" | toFloat) 1073741824 | toInt | formatNumber }}GB</div>
+                  <div class="size-h6">USAGE</div>
+              </div>
+            </div>
+
+    - size: full
+      widgets:
+        - type: search
+          autofocus: true
+          search-engine: google
+          new-tab: true
+
+        - type: monitor
+          cache: 1m
+          title: Services
+          sites:
+          - title: Jellyfin
+            url: http://SERVER_IP:8096
+            check-url: http://SERVER_IP:8096
+            icon: di:jellyfin
+          - title: Nextcloud
+            url: https://SERVER_IP:443
+            check-url: https://SERVER_IP:443
+            icon: di:nextcloud
+            allow-insecure: true
+          - title: Immich
+            url: http://SERVER_IP:2283
+            check-url: http://SERVER_IP:2283
+            icon: di:immich
+          - title: Pi-Hole
+            url: http://SERVER_IP:80/admin
+            check-url: http://SERVER_IP:80/admin
+            icon: si:pihole
+          - title: Collabora
+            url: https://SERVER_IP:9980
+            check-url: https://SERVER_IP:9980
+            icon: si:libreoffice
+            allow-insecure: true
+          - title: ntfy
+            url: http://SERVER_IP:8085
+            check-url: http://SERVER_IP:8085
+            icon: si:ntfy
+        - type: docker-containers
+          hide-by-default: true
+          containers:
+            diun:
+              name: DIUN
+              description: Repo update tracker
+              icon: di:docker
+              hide: false
+            gluetun-gluetun-1:
+              name: Gluetun
+              icon: di:gluetun
+              hide: false
+
+    - size: small
+      widgets:
+        - type: weather
+          location: CITY, COUNTRY
+          units: metric # alternatively "imperial"
+          hour-format: 12h # alternatively "24h"
+          # Optionally hide the location from being displayed in the widget
+          # hide-location: true
+
+        - type: markets
+          markets:
+            - symbol: BTC-USD
+              name: Bitcoin
+            - symbol: ETH-USD
+              name: Etherium
+            - symbol: EURUSD=X
+              name: Euro
+            - symbol: SPY
+              name: S&P 500
+            - symbol: ^IXIC
+              name: NASDAQ
+            - symbol: NVDA
+              name: NVIDIA
+            - symbol: GC=F
+              name: Gold
+
+        - type: releases
+          cache: 1d
+          # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+          # read-only token from your Github account settings and use it here to increase the limit.
+          # token: ...
+          repositories:
+            - glanceapp/glance
+            - jellyfin/jellyfin
+            - immich-app/immich
+            - nextcloud/all-in-one
+            - qdm12/gluetun

@@ -40,3 +40,5 @@ Thumbs.db
 *.swp
 *.conf
 servers.json
+glance/config/*.yml
+!glance/config/*.example
