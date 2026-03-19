@@ -1,16 +1,39 @@
-# Ignore environment files containing secrets/passwords
+# --- EXISTING RULES ---
 *.env
 .env.*
-
-# Ignore specific sensitive config files (if any)
 **/secrets/*
 **/*.key
 **/*.crt
-
-# Ignore OS-generated junk
 .DS_Store
 Thumbs.db
-
-# Ignore Docker's internal data folders (if you store config and data separately)
 **/data/
 **/db/
+
+# --- NEW CONFIG-ONLY RULES ---
+
+# 1. Ignore heavy databases and sqlite files
+# (Most containers use these for 'state' rather than 'config')
+*.db
+*.sqlite
+*.sqlite3
+*.bin
+
+# 2. Ignore Logs and Caches
+# You don't want to push every time a container writes a log line
+**/logs/
+*.log
+**/cache/
+**/.cache/
+**/tmp/
+
+# 3. Ignore media and downloads
+# If you have a Plex or Transmission container, ignore the actual content
+**/downloads/
+**/media/
+**/movies/
+**/tv/
+
+# 4. Ignore Docker-specific runtime files
+# These are generated when containers are running
+.docker-compose.un~
+*.swp
