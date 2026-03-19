@@ -1,0 +1,19 @@
+services:
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - TZ=Europe/Berlin
+      - LOG_LEVEL=info
+      - DIUN_WATCH_SCHEDULE=0 */6 * * *
+      - DIUN_PROVIDERS_DOCKER=true
+      - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
+      - DIUN_NOTIF_NTFY_ENDPOINT=${DIUN_NTFY_ENDPOINT}
+      - DIUN_NOTIF_NTFY_TOPIC=${DIUN_NTFY_TOPIC}
+      - DIUN_NOTIF_NTFY_PRIORITY=3
