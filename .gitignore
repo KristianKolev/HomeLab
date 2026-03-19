@@ -4,6 +4,7 @@
 **/secrets/*
 **/*.key
 **/*.crt
+*.pem
 .DS_Store
 Thumbs.db
 **/data/

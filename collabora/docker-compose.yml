@@ -1,0 +1,16 @@
+services:
+  collabora:
+    image: collabora/code:latest
+    container_name: collabora
+    restart: unless-stopped
+    ports:
+      - "9980:9980"
+    environment:
+      - domain=${COLLABORA_DOMAIN}
+      - aliasgroup1=https://${COLLABORA_IP}
+      - server_name=${COLLABORA_IP}:9980
+      - extra_params=--o:ssl.enable=true --o:ssl.termination=false
+    volumes:
+      - ./certs/fullchain.pem:/etc/coolwsd/ssl/cert.pem:ro
+      - ./certs/privkey.pem:/etc/coolwsd/ssl/key.pem:ro
+
